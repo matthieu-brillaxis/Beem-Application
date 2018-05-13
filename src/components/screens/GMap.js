@@ -77,10 +77,9 @@ class GMap extends Component {
                         <Marker
                             key={marker.id}
                             coordinate={{latitude:marker.latitude, longitude: marker.longitude}}
-                            title={marker.title}
-                            description={marker.description}
+                            navigation={this.props.navigation}
                             onPress={() =>
-                                this.props.navigation.navigate('placeScreen', {item: marker})
+                                this.props.navigation.navigate('placeScreen', {item: marker, title: marker.name})
                             }
                         >
                             <Image source={require('../../assets/img/pointeurFichier1.png')}

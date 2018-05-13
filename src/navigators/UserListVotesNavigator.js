@@ -10,6 +10,13 @@ const stackScenes = {
         screen:UserListVotesScreen,
         navigationOptions: {
             header: null,
+            transitionConfig : () => ({
+                transitionSpec: {
+                    duration: 0,
+                    timing: Animated.timing,
+                    easing: Easing.step0,
+                },
+            }),
         },
     },
     VoteScreen: {
@@ -23,6 +30,7 @@ const stackScenes = {
 
 const stackOptions = {
     initialRouteName:'UserListVotes',
+    mode:'modal',
     // headerMode: 'float',
     // navigationOptions: {
     //     gesturesEnabled: false,

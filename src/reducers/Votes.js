@@ -25,6 +25,25 @@ export default function reducer(state = defaultState, action) {
                 error: action.error,
             };
 
+        case 'UPDATE_VOTE_START':
+            return {
+                ...state,
+                isLoading:true,
+            };
+
+        case 'UPDATE_VOTE_SUCCESS':
+            return {
+                ...state,
+                isLoading:false,
+            }
+
+        case 'UPDATE_VOTE_ERROR':
+            return {
+                ...state,
+                isLoading:false,
+                error: action.error,
+            };
+
         default:
             return state;
     }

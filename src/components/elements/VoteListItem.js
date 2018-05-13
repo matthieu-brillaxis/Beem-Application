@@ -44,15 +44,13 @@ const styles = StyleSheet.create({
         fontSize: 18
     },
     item: {
-        marginRight:10,
-        marginLeft:10,
         marginTop:10,
         marginBottom:10,
-        paddingLeft:10,
-        paddingRight:10,
+        paddingLeft:20,
+        paddingRight:20,
         flex:1,
         borderBottomWidth:1,
-        borderColor: 'black',
+        borderColor: 'grey',
         borderStyle:'solid',
         height: itemHeight,
     }

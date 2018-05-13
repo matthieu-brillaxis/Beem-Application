@@ -14,11 +14,13 @@ class Profil extends Component {
     }
 
     static navigationOptions = ({ navigation }) => ({
-        transitionSpec: {
-            duration: 0,
-            timing: Animated.timing,
-            easing: Easing.step0,
-        },
+        transitionConfig : () => ({
+            transitionSpec: {
+                duration: 0,
+                timing: Animated.timing,
+                easing: Easing.step0,
+            },
+        }),
     });
  
     render () {

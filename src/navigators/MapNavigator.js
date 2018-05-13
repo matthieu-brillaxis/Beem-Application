@@ -10,19 +10,26 @@ const stackScenes = {
         screen:GMap,
         navigationOptions: {
             header: null,
+            transitionConfig : () => ({
+                transitionSpec: {
+                    duration: 0,
+                    timing: Animated.timing,
+                    easing: Easing.step0,
+                },
+            }),
         },
     },
     placeScreen: {
         screen:placeScreen,
         navigationOptions: {
             headerMode: 'screen',
-            mode: 'modal',
         },
     },
 };
 
 const stackOptions = {
     initialRouteName:'GMap',
+    mode:'modal',
     // navigationOptions: {
     //     gesturesEnabled: false,
     // },

@@ -35,7 +35,7 @@ const tabScenes = {
 };
 
 const tabOptions = {
-  initialRouteName: 'GMap',
+  initialRouteName: 'List',
   lazy: false,
   swipeEnabled: true,
   animationEnabled: true,

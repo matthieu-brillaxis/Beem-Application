@@ -1,69 +1,144 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { ScrollView, Text, TextInput, View, Button, Image, TouchableOpacity, StyleSheet } from 'react-native';
+import { bindActionCreators } from 'redux';
+import { updateVote } from '../../../actions/Votes';
+import LoadingScreen from '../../elements/LoadingScreen';
 
 class VoteScreen extends Component {
     constructor (props) {
         super();
+        this.state = {
+            value: null,
+        }
     }
 
-    static navigationOptions = ({ navigation }) => ({
-
-        title: typeof(navigation.state.params)==='undefined' || typeof(navigation.state.params.title) === 'undefined' ? 'find': navigation.state.params.title,
+    static navigationOptions =  ({ navigation }) => ({
+        title: `${navigation.state.params.title}`,
     });
+
+    voteUpdate(e,value) {
+        this.props.updateVote(this.props.navigation.state.params.item.id ,this.props.navigation.state.params.item.place_id, value);
+        this.setState({ value: value })
+        e.preventDefault();
+    }
+    componentDidMount() {
+        this.setState({value:this.props.navigation.state.params.item.value})
+    }
  
     render () {
-        console.log(this.props.navigation.state);
-        return (
-            <View>
-                <Text>
-                    {this.props.navigation.state.params.item.place.name}
-                </Text>
-                {/* <Text>
-                    {item.description}
-                </Text> */}
-                <View>
-                    <Text>
-                        {this.props.navigation.state.params.item.place.adresse}
+        if(this.props.isLoading == true) {
+            return (
+                <LoadingScreen/>
+            );
+        } else {
+            console.log(this.props.navigation.state.params.item);
+            return (
+                <View style={ styles.container } >
+                    <Text style={ styles.subtitle}>
+                        Information
                     </Text>
-                    <Text>
-                    {this.props.navigation.state.params.item.place.ville}, {this.props.navigation.state.params.item.place.code_postal}
+                    <Text style= { styles.desc} >
+                        {this.props.navigation.state.params.item.place.description}
                     </Text>
-                </View>
-                <View>
-                    <Text>
+
+                    <Text style={ styles.subtitle}>
+                        Lieux
+                    </Text>
+                    <Text style= {styles.text }>
+                        {this.props.navigation.state.params.item.place.adresse}, {this.props.navigation.state.params.item.place.code_postal} {this.props.navigation.state.params.item.place.ville}
+                    </Text>
+
+                    <Text style={ styles.subtitle}>
+                        Date
+                    </Text>
+                    <Text style= {styles.text }>
                         {`Du ${this.props.navigation.state.params.item.place.horaire_debut} au ${this.props.navigation.state.params.item.place.horaire_fin}`}
                     </Text>
+
+                    <View style = { styles.buttonContainer }>
+                        <TouchableOpacity onPress={(e) => 
+                            this.voteUpdate(e,1)
+                        }
+                        style= { styles.button  }>
+                            <Text style= {this.state.value == 1? styles.active : styles.default}>
+                                Top!
+                            </Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={(e) => 
+                            this.voteUpdate(e,0)
+                        }
+                        style= { styles.button }>
+                            <Text style= {this.state.value == 0? styles.active : styles.default}>
+                                Flop!
+                            </Text>
+                        </TouchableOpacity>
+                    </View>
                 </View>
-                <View>
-                    <TouchableOpacity>
-                        <Text>
-                            Top!
-                        </Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity>
-                        <Text>
-                            Flop!
-                        </Text>
-                    </TouchableOpacity>
-                </View>
-            </View>
-        );
+            );
+        }
     }
 }
 
 const styles = StyleSheet.create({
     container: {
-        height: '100%',
-        width: '100%',
-    }
+        backgroundColor:'white',
+        flex:1,
+        paddingRight:20,
+        paddingLeft:20,
+        justifyContent: 'center',
+        alignItems: 'center',
+        
+    },
+    subtitle: {
+        fontWeight:'bold',
+        fontSize:18,
+        marginTop:20,
+        marginBottom:20,
+    },
+    desc : {
+        fontSize:16,
+        marginBottom:10,
+    },
+    buttonContainer: {
+        flex:1,
+        flexDirection:'row',
+        alignItems: 'center',
+    },
+    button: {
+        padding:15,
+        margin:10,
+        backgroundColor: 'black',
+        borderRadius: 10,
+        borderWidth: 0,
+        borderColor: 'transparent',
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 0 },
+        shadowOpacity: 0.5,
+        shadowRadius: 5,
+    },
+    active: {
+        color:'#ffcf02',  
+    },
+    default: {
+        color:'white',
+    },
+    text: {
+        fontSize:16,
+        marginBottom:10,
+    },
 });
 
-// const mapStateToProps = (state, ownProps) => {
-//     return {
-//         firstName: state.AppAuth.profile.firstName,
-//         lastName: state.AppAuth.profile.lastName,
-//     };
-// }
+const mapStateToProps = (state, ownProps) => {
+    return { 
+        isLoading: state.Votes.isLoading,
+    };
+}
+
+const mapDispatchToProps = (dispatch) => (
+    bindActionCreators({
+        updateVote,
+    }, dispatch)
+);
  
-export default connect(null, null)(VoteScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(VoteScreen);
