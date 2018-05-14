@@ -10,6 +10,8 @@ class VoteScreen extends Component {
         super();
         this.state = {
             value: null,
+            positiveVote: null,
+            negativeVote: null,
         }
     }
 
@@ -17,13 +19,24 @@ class VoteScreen extends Component {
         title: `${navigation.state.params.title}`,
     });
 
-    voteUpdate(e,value) {
+    voteUpdate(e,value,vote) {
         this.props.updateVote(this.props.navigation.state.params.item.id ,this.props.navigation.state.params.item.place_id, value);
         this.setState({ value: value })
+        if(vote == 1 && this.state.negativeVote > 0) {
+            this.setState({ positiveVote : this.state.positiveVote +1, negativeVote: this.state.negativeVote - 1 });
+        } else if( vote == 1 && this.state.negativeVote == 0){
+            this.setState({ positiveVote : this.state.positiveVote +1});
+        } else if ( vote == -1 && this.state.positiveVote > 0) {
+            this.setState({ negativeVote : this.state.negativeVote +1, positiveVote: this.state.positiveVote - 1 });
+        } else if ( vote == -1 && this.state.positiveVote == 0) {
+            this.setState({ negativeVote : this.state.negativeVote +1});
+        }
         e.preventDefault();
     }
     componentDidMount() {
-        this.setState({value:this.props.navigation.state.params.item.value})
+        this.setState({value:this.props.navigation.state.params.item.value});
+        this.setState({positiveVote: this.props.navigation.state.params.item.place.positiveVotes});
+        this.setState({negativeVote: this.props.navigation.state.params.item.place.negativeVotes});
     }
  
     render () {
@@ -41,6 +54,14 @@ class VoteScreen extends Component {
                     <Text style= { styles.desc} >
                         {this.props.navigation.state.params.item.place.description}
                     </Text>
+                    <View style = {styles.voteContainer}>
+                        <Text style= {styles.text }>
+                            Top : {this.state.positiveVote}
+                        </Text>
+                        <Text style= {styles.text }>
+                            Flop : {this.state.negativeVote}
+                        </Text>
+                    </View>
 
                     <Text style={ styles.subtitle}>
                         Lieux
@@ -58,7 +79,7 @@ class VoteScreen extends Component {
 
                     <View style = { styles.buttonContainer }>
                         <TouchableOpacity onPress={(e) => 
-                            this.voteUpdate(e,1)
+                            this.voteUpdate(e,1,1)
                         }
                         style= { styles.button  }>
                             <Text style= {this.state.value == 1? styles.active : styles.default}>
@@ -66,7 +87,7 @@ class VoteScreen extends Component {
                             </Text>
                         </TouchableOpacity>
                         <TouchableOpacity onPress={(e) => 
-                            this.voteUpdate(e,0)
+                            this.voteUpdate(e,0,-1)
                         }
                         style= { styles.button }>
                             <Text style= {this.state.value == 0? styles.active : styles.default}>
