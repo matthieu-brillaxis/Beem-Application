@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { addNavigationHelpers, StackNavigator } from 'react-navigation';
 import placeScreen from '../components/screens/mapScreens/placeScreen';
+import formScreen from '../components/screens/mapScreens/formScreen';
 import GMap from '../components/screens/GMap';
 
 const stackScenes = {
@@ -21,6 +22,12 @@ const stackScenes = {
     },
     placeScreen: {
         screen:placeScreen,
+        navigationOptions: {
+            headerMode: 'screen',
+        },
+    },
+    formScreen: {
+        screen:formScreen,
         navigationOptions: {
             headerMode: 'screen',
         },

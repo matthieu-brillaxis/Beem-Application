@@ -90,6 +90,10 @@ class GMap extends Component {
                     ))}
                     <TouchableOpacity
                         style={styles.roundButton}
+                        navigation={this.props.navigation}
+                        onPress={() =>
+                            this.props.navigation.navigate('formScreen')
+                        }
                     >
                             <Text style={styles.textButton}>
                                 +
